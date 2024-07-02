@@ -5,6 +5,7 @@ using namespace std;
 using vi = vector<int>;
 using vll = vector<long long>;
 using ll = long long;
+#define MOD 10e9 + 7
 
 void solve()
 {
