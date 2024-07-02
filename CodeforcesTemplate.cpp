@@ -1,16 +1,15 @@
-#include "allImports.h"
-// #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 using vi = vector<int>;
+using vll = vector<long long>;
 using ll = long long;
 
 void solve()
 {
 	int n;
 	cin >> n;
-	// Your code here
 }
 
 int main()
