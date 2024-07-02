@@ -5,7 +5,7 @@ using namespace std;
 using vi = vector<int>;
 using vll = vector<long long>;
 using ll = long long;
-#define MOD 10e9 + 7
+#define MOD 10e9 + 7;
 
 #define benchmark(code)                                                               \
 	{                                                                                 \
@@ -20,10 +20,50 @@ using ll = long long;
 		std::cerr << "Elapsed time (double): " << ms_double.count() << "ms\n";        \
 	}
 
+char digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
 void solve()
 {
 	int n;
 	cin >> n;
+	string s;
+	cin >> s;
+
+	ll columnCount = 0;
+	for (int i = 0; i < s.size(); i++)
+		columnCount += s[i] - '0';
+
+	ll totalCount = 0;
+
+	string ans = "";
+	int subAmount = 0;
+	for (int i = s.size() - 1; i >= 0; i--)
+	{
+		columnCount -= subAmount;
+
+		totalCount /= 10;
+
+		totalCount += columnCount;
+
+		ans += digits[totalCount % 10];
+
+		subAmount = s[i] - '0';
+	}
+
+	ans += to_string(totalCount / 10);
+
+	reverse(ans.begin(), ans.end());
+
+	for (int i = 0; i < ans.size(); i++)
+	{
+		if (ans[i] != '0')
+		{
+			ans = ans.substr(i);
+			break;
+		}
+	}
+
+	cout << ans << '\n';
 }
 
 int main()
@@ -33,6 +73,9 @@ int main()
 
 	int t;
 	cin >> t;
-	while (t--)
-		solve();
+
+		while (t--)
+			solve();
+
+		return 0;
 }
