@@ -23,37 +23,25 @@ using ll = long long;
 void solve()
 {
 	int n;
-	ll m;
-	cin >> n >> m;
+	cin >> n;
+	map<int, int> count;
 
-	vector<ll> petals(n);
-
-	for (auto &i : petals)
-		cin >> i;
-
-	sort(petals.begin(), petals.end());
-
-	ll ans = 0;
-
-	queue<ll> q;
-	ll currentCount = 0;
-
-	for (auto &petal : petals)
+	for (int i = 0; i < n; ++i)
 	{
-		while ((!q.empty() && petal - q.front() >= 2) || petal + currentCount > m)
-		{
-			currentCount -= q.front();
-			q.pop();
-		}
-
-		q.push(petal);
-		currentCount += petal;
-
-		if (currentCount <= m)
-			ans = max(currentCount, ans);
+		int val;
+		cin >> val;
+		count[val]++;
 	}
 
-	cout << ans << '\n';
+	for (const auto &[a, b] : count)
+	{
+		if (b % 2 == 1)
+		{
+			cout << "YES" << '\n';
+			return;
+		}
+	}
+	cout << "NO" << '\n';
 }
 
 int main()

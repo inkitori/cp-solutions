@@ -22,38 +22,23 @@ using ll = long long;
 
 void solve()
 {
-	int n;
-	ll m;
-	cin >> n >> m;
+	int n, p, s;
+	cin >> n >> p >> s;
+	vector<int> a(n);
+	--p;
+	--s;
 
-	vector<ll> petals(n);
+	for (int i = s; i <= p; ++i)
+		a[i] = 1;
 
-	for (auto &i : petals)
-		cin >> i;
+	for (int i = s - 1; i >= 0; --i)
+		a[i] = a[i + 1] == 1 ? -1 : 1;
+	for (int i = p + 1; i < n; ++i)
+		a[i] = a[i - 1] == 1 ? -1 : 1;
 
-	sort(petals.begin(), petals.end());
-
-	ll ans = 0;
-
-	queue<ll> q;
-	ll currentCount = 0;
-
-	for (auto &petal : petals)
-	{
-		while ((!q.empty() && petal - q.front() >= 2) || petal + currentCount > m)
-		{
-			currentCount -= q.front();
-			q.pop();
-		}
-
-		q.push(petal);
-		currentCount += petal;
-
-		if (currentCount <= m)
-			ans = max(currentCount, ans);
-	}
-
-	cout << ans << '\n';
+	for (int i : a)
+		cout << i << ' ';
+	cout << '\n';
 }
 
 int main()

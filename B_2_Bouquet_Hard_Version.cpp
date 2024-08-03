@@ -22,35 +22,45 @@ using ll = long long;
 
 void solve()
 {
-	int n;
+	ll n;
 	ll m;
 	cin >> n >> m;
 
-	vector<ll> petals(n);
+	vector<pair<ll, ll>> flowers(n);
 
-	for (auto &i : petals)
-		cin >> i;
+	for (auto &pair : flowers)
+		cin >> pair.first;
 
-	sort(petals.begin(), petals.end());
+	for (auto &pair : flowers)
+		cin >> pair.second;
+
+	sort(flowers.begin(), flowers.end(), [&](auto &a, auto &b)
+		 { return a.first < b.first; });
 
 	ll ans = 0;
 
-	queue<ll> q;
-	ll currentCount = 0;
+	// for (auto &[petalCount, quantity] : flowers)
+	// {
+	// 	cout << "( " << petalCount << ", " << quantity << " ), ";
+	// }
+	// cout << '\n';
 
-	for (auto &petal : petals)
+	for (int i = 0; i < flowers.size(); ++i)
 	{
-		while ((!q.empty() && petal - q.front() >= 2) || petal + currentCount > m)
+		if (i == flowers.size() - 1 || flowers[i + 1].first - flowers[i].first > 1)
 		{
-			currentCount -= q.front();
-			q.pop();
+			ans = max(ans, min(m / flowers[i].first, flowers[i].second) * flowers[i].first);
+			continue;
 		}
 
-		q.push(petal);
-		currentCount += petal;
+		auto mul1 = min(m / flowers[i].first, flowers[i].second);
+		auto diff = m - flowers[i].first * mul1;
+		auto mul2 = min(diff / flowers[i + 1].first, flowers[i + 1].second);
 
-		if (currentCount <= m)
-			ans = max(currentCount, ans);
+		auto val = flowers[i].first * mul1 + flowers[i + 1].first * mul2;
+		auto diff2 = m - val;
+
+		ans = max(ans, val + min(diff2, min(mul1, flowers[i + 1].second - mul2)));
 	}
 
 	cout << ans << '\n';

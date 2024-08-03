@@ -23,34 +23,56 @@ using ll = long long;
 void solve()
 {
 	int n;
-	ll m;
-	cin >> n >> m;
-
-	vector<ll> petals(n);
-
-	for (auto &i : petals)
+	cin >> n;
+	vector<ll> a(n);
+	vector<ll> dp(n, 0);
+	for (auto &i : a)
 		cin >> i;
-
-	sort(petals.begin(), petals.end());
 
 	ll ans = 0;
 
-	queue<ll> q;
-	ll currentCount = 0;
-
-	for (auto &petal : petals)
+	for (int i = 1; i < a.size(); ++i)
 	{
-		while ((!q.empty() && petal - q.front() >= 2) || petal + currentCount > m)
+		if (a[i] == 1 && a[i - 1] > 1)
 		{
-			currentCount -= q.front();
-			q.pop();
+			cout << "-1" << '\n';
+			return;
 		}
+		else if (a[i] == 1)
+			continue;
+		else if (a[i - 1] == 1)
+			continue;
 
-		q.push(petal);
-		currentCount += petal;
+		ll cp = a[i];
 
-		if (currentCount <= m)
-			ans = max(currentCount, ans);
+		if (a[i] > a[i - 1])
+		{
+			ll cp2 = a[i - 1];
+			ll diff = 0;
+			while (cp2 < cp)
+			{
+				cp2 = pow(cp2, 2);
+				diff++;
+			}
+			if (cp < cp2)
+				dp[i]++;
+			if (diff > dp[i - 1])
+				dp[i] = 0;
+			else
+			{
+				dp[i] += dp[i - 1] - diff;
+			}
+		}
+		else
+		{
+			while (cp < a[i - 1])
+			{
+				cp = pow(cp, 2);
+				dp[i]++;
+			}
+			dp[i] += dp[i - 1];
+		}
+		ans += dp[i];
 	}
 
 	cout << ans << '\n';
