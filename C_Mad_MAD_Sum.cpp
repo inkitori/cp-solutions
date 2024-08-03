@@ -23,7 +23,49 @@ using ll = long long;
 void solve()
 {
 	int n;
+	ll sum = 0;
 	cin >> n;
+
+	vector<ll> a(n);
+	for (auto &i : a)
+		cin >> i;
+	for (auto &i : a)
+		sum += i;
+
+	ll cur = 0;
+	unordered_map<ll, ll> count;
+	for (auto &i : a)
+	{
+		++count[i];
+		if (count[i] >= 2 && i > cur)
+			cur = i;
+		i = cur;
+	}
+
+	for (auto &i : a)
+		sum += i;
+
+	ll cur2 = 0;
+	unordered_map<ll, ll> count2;
+	for (auto &i : a)
+	{
+		++count2[i];
+		if (count2[i] >= 2 && i > cur2)
+			cur2 = i;
+		i = cur2;
+	}
+
+	// for (auto &i : a)
+	// 	cout << i << ", ";
+	// cout << '\n';
+	// cout << sum << '\n';
+	ll mul = 1;
+	for (int i = a.size() - 1; i >= 0; --i)
+	{
+		sum += a[i] * mul;
+		++mul;
+	}
+	cout << sum << '\n';
 }
 
 int main()

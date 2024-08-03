@@ -22,8 +22,27 @@ constexpr ll mod = 1'000'000'007;
 
 void solve()
 {
-	int n;
-	cin >> n;
+	ll x;
+	string s;
+	cin >> x >> s;
+	ll ans = s.size();
+
+	for (ll i = 0; i < x; ++i)
+	{
+		ll mul = s[i] - '1';
+		ll delta = ans - (i + 1);
+
+		if (s.size() < x)
+		{
+			string deltaStr = s.substr(i + 1);
+			for (int j = 0; j < mul; ++j)
+				s += deltaStr;
+		}
+
+		ans = (ans + delta * mul) % mod;
+	}
+
+	cout << (ans % mod + mod) % mod << '\n';
 }
 
 int main()
