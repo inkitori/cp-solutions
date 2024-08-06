@@ -20,33 +20,33 @@ constexpr ll mod = 1'000'000'007;
 		std::cerr << "Elapsed time (double): " << ms_double.count() << "ms\n";        \
 	}
 
-int convert(int i, int k)
+int dp(vector<int> &cost, vector<int> &happiness, int month, int salary, int money, vector<vector<int>> &tableCompute)
 {
-	if (i % (2 * k) == 0)
-		return 2 * k;
-	return i % (2 * k);
-}
+	if (month == cost.size())
+		return 0;
 
+	if (tableCompute[month][money] != -1)
+		return tableCompute[month][money];
+
+	int val = dp(cost, happiness, month + 1, salary, money + salary, tableCompute);
+	if (money >= cost[month])
+		val = max(val, happiness[month] + dp(cost, happiness, month + 1, salary, money - cost[month] + salary, tableCompute));
+
+	tableCompute[month][money] = val;
+
+	return val;
+}
 void solve()
 {
-	int n, k;
-	cin >> n >> k;
-	vector<int> chips(n);
-	for (ll &chip : chips)
-		cin >> chip;
+	vector<vector<int>> tableCompute(51, vector<int>(5100000000, -1));
 
-	sort(chips.begin(), chips.end());
-	int l = convert(chips[0], k);
-	int r = convert(chips[0] + k - 1, k);
+	int m, x;
+	cin >> m >> x;
+	vector<int> cost(m), happiness(m);
+	for (int i = 0; i < m; ++i)
+		cin >> cost[i] >> happiness[i];
 
-	int ans = chips[0];
-	for (int i = 1; i < chips.size(); ++i)
-	{
-		if (l < r)
-		{
-			l = max(l, chips[i]);
-		}
-	}
+	cout << dp(cost, happiness, 0, x, 0, tableCompute) << '\n';
 }
 
 int main()
