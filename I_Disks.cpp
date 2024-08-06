@@ -27,11 +27,13 @@ struct Disk
 	ll r;
 };
 
-constexpr double epsilon = 0.00001;
+constexpr double epsilon = 0.000001;
+
 inline double dist(ll x1, ll y1, ll x2, ll y2)
 {
 	return sqrt(pow((double)x2 - (double)x1, 2) + pow((double)y2 - (double)y1, 2));
 }
+
 inline bool fuzzyEqual(double x, double y)
 {
 	return abs(x - y) < epsilon;
@@ -45,8 +47,8 @@ void color(int i, int c, vector<bool> &visited, vector<vector<int>> &colors, vec
 	visited[i] = true;
 	colors[c].push_back(i);
 
-	for (int j = 0; j < adj[i].size(); ++j)
-		color(adj[i][j], c, visited, colors, adj);
+	for (int neighbor : adj[i])
+		color(neighbor, c, visited, colors, adj);
 }
 
 bool check(int source, vector<vector<int>> &adj, int flip, vector<int> &nodeState)
@@ -84,6 +86,7 @@ void solve()
 		{
 			if (i == j)
 				continue;
+
 			if (fuzzyEqual(disks[i].r + disks[j].r, dist(disks[i].x, disks[i].y, disks[j].x, disks[j].y)))
 				adj[i].push_back(j);
 		}
@@ -117,11 +120,6 @@ void solve()
 				cout << "YES\n";
 				return;
 			}
-		}
-		else
-		{
-			cout << "NO\n";
-			return;
 		}
 	}
 
