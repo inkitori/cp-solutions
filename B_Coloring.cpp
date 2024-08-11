@@ -20,52 +20,37 @@ constexpr ll mod = 1'000'000'007;
 		std::cerr << "Elapsed time (double): " << ms_double.count() << "ms\n";        \
 	}
 
-bool test(int r, int c, vector<int> &a)
+string solve()
 {
-	bool moreThanTwo = false;
-	int colsPopulated = 0;
-
-	for (int i : a)
-	{
-		int cols = i / r;
-		if (colsPopulated + cols > c)
-		{
-			if (colsPopulated == c - 1)
-			{
-				if (moreThanTwo && cols >= 2)
-					return true;
-				else
-					return false;
-			}
-			else
-				return true;
-		}
-		if (cols > 2)
-			moreThanTwo = true;
-
-		if (cols > 1)
-			colsPopulated += cols;
-
-		if (colsPopulated == c)
-			return true;
-	}
-	return false;
-}
-
-void solve()
-{
-	int r, c, k;
-	cin >> r >> c >> k;
-	vector<int> a(k);
+	int n, m, k;
+	cin >> n >> m >> k;
+	vector<int> a(m);
 	for (auto &i : a)
 		cin >> i;
 
-	sort(a.rbegin(), a.rend());
+	if (n % k != 0)
+	{
+		int segs = (n / k) + 1;
+		int thresh = n % k;
+		int count = 0;
 
-	if (test(r, c, a) || test(c, r, a))
-		cout << "Yes\n";
-	else
-		cout << "No\n";
+		for (auto &i : a)
+		{
+			if (i > segs)
+				return "NO";
+			if (i == segs)
+				++count;
+			if (count > thresh)
+				return "NO";
+		}
+		return "YES";
+	}
+
+	int segs = n / k;
+	for (auto &i : a)
+		if (i > segs)
+			return "NO";
+	return "YES";
 }
 
 int main()
@@ -76,5 +61,5 @@ int main()
 	int t;
 	cin >> t;
 	while (t--)
-		solve();
+		cout << solve() << '\n';
 }

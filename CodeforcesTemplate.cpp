@@ -2,6 +2,8 @@
 
 using namespace std;
 
+#define int long long // lol
+
 using vi = vector<int>;
 using vll = vector<long long>;
 using ll = long long;
