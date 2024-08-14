@@ -7,8 +7,6 @@ using namespace std;
 using vi = vector<int>;
 using vll = vector<long long>;
 using ll = long long;
-using vpi = vector<pair<int, int>>;
-using vpll = vector<pair<ll, ll>>;
 constexpr ll mod = 1'000'000'007;
 
 #define benchmark(code)                                                               \
@@ -26,8 +24,55 @@ constexpr ll mod = 1'000'000'007;
 
 void solve()
 {
-	int n;
-	cin >> n;
+	int N, Q, C;
+	cin >> N >> Q >> C;
+
+	vector<int> a(N);
+	vector<pair<int, int>> pairs(Q);
+	unordered_map<int, int> hToA;
+
+	for (int &i : a)
+		cin >> i;
+
+	for (auto &p : pairs)
+	{
+		cin >> p.first >> p.second;
+		--p.first;
+		--p.second;
+		hToA[p.second] = max(hToA[p.second], p.first);
+	}
+
+	vector<int> runningMax(N);
+
+	if (!a[0])
+		a[0] = 1;
+
+	runningMax[0] = a[0];
+
+	for (int i = 1; i < a.size(); ++i)
+	{
+		if (hToA.find(i) == hToA.end())
+		{
+			if (!a[i])
+				a[i] = 1;
+		}
+		else
+		{
+			int prevMax = runningMax[hToA[i]];
+			if (prevMax + 1 > C)
+			{
+				cout << "-1\n";
+				return;
+			}
+			a[i] = prevMax + 1;
+		}
+
+		runningMax[i] = max(a[i], runningMax[i - 1]);
+	}
+
+	for (int i : a)
+		cout << i << " ";
+	cout << '\n';
 }
 
 int main()

@@ -24,10 +24,55 @@ constexpr ll mod = 1'000'000'007;
 		std::cerr << "Elapsed time (double): " << ms_double.count() << "ms\n";        \
 	}
 
-void solve()
+inline bool checkAllZero(vpll &b)
 {
-	int n;
-	cin >> n;
+	for (auto &p : b)
+		if (p.second)
+			return false;
+	return true;
+}
+
+inline ll calcScore(vpll &a)
+{
+	return a[(a.size() / 2) - 1].first + a.back().first;
+}
+
+inline ll lastOne(vpll &a)
+{
+	for (int i = a.size() - 1; i >= 0; --i)
+		if (a[i].second)
+			return i;
+
+	return 0;
+}
+
+ll solve()
+{
+	ll n, k;
+	cin >> n >> k;
+	vpll a(n);
+
+	for (auto &p : a)
+		cin >> p.first;
+	for (auto &p : a)
+		cin >> p.second;
+
+	sort(a.begin(), a.end());
+
+	if (checkAllZero(a))
+		return calcScore(a);
+
+	ll ans = 0;
+
+	{
+		// testing bubble
+		vpll aBub = a;
+		aBub[lastOne(aBub)].first += k;
+		sort(aBub.begin(), aBub.end());
+		ans = max(ans, calcScore(aBub));
+	}
+
+	return ans;
 }
 
 int main()
@@ -38,5 +83,5 @@ int main()
 	int t;
 	cin >> t;
 	while (t--)
-		solve();
+		cout << solve() << '\n';
 }

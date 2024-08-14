@@ -2,11 +2,13 @@
 
 using namespace std;
 
-#define int long long // lol
+// #define int long long // lol
 
 using vi = vector<int>;
 using vll = vector<long long>;
 using ll = long long;
+using vpi = vector<pair<int, int>>;
+using vpll = vector<pair<ll, ll>>;
 constexpr ll mod = 1'000'000'007;
 
 #define benchmark(code)                                                               \
